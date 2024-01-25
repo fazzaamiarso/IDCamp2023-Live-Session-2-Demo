@@ -32,7 +32,7 @@ const PersonalInfo = () => {
           </label>
           <input
             type="text"
-            {...register("name", { required: true })}
+            {...register("name")}
             id="name"
             placeholder="e.g. Stephen King"
           />
@@ -43,7 +43,7 @@ const PersonalInfo = () => {
           </label>
           <input
             type="email"
-            {...register("email", { required: true })}
+            {...register("email")}
             id="email"
             placeholder="e.g. stephenking@lorem.com"
           />
@@ -54,7 +54,7 @@ const PersonalInfo = () => {
           </label>
           <input
             type="text"
-            {...register("phoneNumber", { required: true })}
+            {...register("phoneNumber")}
             id="phoneNumber"
             placeholder="e.g. +1 234 567 890"
           />
