@@ -1,10 +1,16 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { stepsVariant, useFormStore } from "../store/form-store";
 
-const Step1 = () => {
-  const { register, handleSubmit } = useForm();
+const PersonalInfo = () => {
+  const navigate = useNavigate();
+  const updateData = useFormStore((state) => state.updateData);
+  const personalData = useFormStore((state) => state.personal);
+  const { register, handleSubmit } = useForm({ values: personalData });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    updateData({ data, currentStep: stepsVariant.personal });
+    navigate("/plan");
   };
 
   return (
@@ -26,7 +32,7 @@ const Step1 = () => {
           </label>
           <input
             type="text"
-            {...register("name")}
+            {...register("name", { required: true })}
             id="name"
             placeholder="e.g. Stephen King"
           />
@@ -37,25 +43,32 @@ const Step1 = () => {
           </label>
           <input
             type="email"
-            {...register("email")}
+            {...register("email", { required: true })}
             id="email"
             placeholder="e.g. stephenking@lorem.com"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="phone-number" className="font-[500]">
+          <label htmlFor="phoneNumber" className="font-[500]">
             Phone Number{" "}
           </label>
           <input
             type="text"
-            {...register("phone-number")}
-            id="phone-number"
+            {...register("phoneNumber", { required: true })}
+            id="phoneNumber"
             placeholder="e.g. +1 234 567 890"
           />
+        </div>
+        <div className="absolute bottom-0 left-0 w-full bg-white py-4">
+          <div className="mx-auto flex w-11/12 items-center">
+            <button className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia">
+              Next Step
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default Step1;
+export default PersonalInfo;

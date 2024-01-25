@@ -3,13 +3,17 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./pages/layout";
-import Step1 from "./pages/step-1";
+import Plan from "./pages/plan";
+import PersonalInfo from "./pages/personal-info";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ index: true, element: <Step1 /> }],
+    children: [
+      { index: true, element: <PersonalInfo /> },
+      { path: "plan", element: <Plan /> },
+    ],
   },
 ]);
 

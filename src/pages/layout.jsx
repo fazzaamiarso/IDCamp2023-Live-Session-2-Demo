@@ -20,16 +20,6 @@ const Layout = () => {
       <div className="mx-auto w-11/12">
         <Outlet />
       </div>
-      <div className="absolute bottom-0 w-full bg-white py-4">
-        <div className="mx-auto flex w-11/12 items-center">
-          <button
-            form="step-form"
-            className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia"
-          >
-            Next Step
-          </button>
-        </div>
-      </div>
     </main>
   );
 };
