@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import * as Switch from "@radix-ui/react-switch";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { Controller, useForm } from "react-hook-form";
-import { useFormStore } from "../store/form-store";
+import { stepsVariant, useFormStore } from "../store/form-store";
 
 const AdvancedIcon = () => {
   return (
@@ -63,8 +63,9 @@ const ProIcon = () => {
     </svg>
   );
 };
-const plans = [
-  {
+
+const planVariants = {
+  arcade: {
     name: "Arcade",
     price: {
       yearly: 90,
@@ -72,7 +73,7 @@ const plans = [
     },
     icon: <ArcadeIcon />,
   },
-  {
+  advanced: {
     name: "Advanced",
     price: {
       yearly: 120,
@@ -80,7 +81,7 @@ const plans = [
     },
     icon: <AdvancedIcon />,
   },
-  {
+  pro: {
     name: "Pro",
     price: {
       yearly: 150,
@@ -88,19 +89,33 @@ const plans = [
     },
     icon: <ProIcon />,
   },
-];
+};
 
 const Plan = () => {
   const navigate = useNavigate();
 
+  const planData = useFormStore((state) => state.plan);
   const updateData = useFormStore((state) => state.updateData);
+
   const { control, handleSubmit, watch } = useForm({
-    defaultValues: { billType: "monthly" },
+    defaultValues: {
+      billType: planData?.billType ? planData.billType : "monthly",
+      planType: planData?.name,
+    },
   });
 
   const billType = watch("billType");
+
   const onSubmit = (data) => {
-    console.log(data);
+    const updatedData = {
+      currentStep: stepsVariant.plan,
+      data: {
+        name: planVariants[data.planType.toLowerCase()].name,
+        price: planVariants[data.planType.toLowerCase()].price[data.billType],
+        billType: data.billType,
+      },
+    };
+    updateData(updatedData);
   };
 
   return (
@@ -111,7 +126,7 @@ const Plan = () => {
         </h1>
         <p>You have the option of monthly or yearly billing</p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div className="space-y-8">
           <div>
             <Controller
@@ -124,7 +139,7 @@ const Plan = () => {
                     onValueChange={onChange}
                     value={value}
                   >
-                    {plans.map((plan) => {
+                    {Object.values(planVariants).map((plan) => {
                       return (
                         <RadioGroup.Item
                           key={plan.name}
@@ -177,15 +192,21 @@ const Plan = () => {
           <div className="mx-auto flex w-11/12 items-center">
             <button
               type="button"
-              className="rounded-sm  p-2 text-neutral-coolGray"
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
+                handleSubmit(onSubmit)();
                 navigate(-1);
               }}
+              className="rounded-sm  p-2 text-neutral-coolGray"
             >
               Go Back
             </button>
-            <button className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia">
+            <button
+              type="button"
+              onClick={() => {
+                handleSubmit(onSubmit)();
+              }}
+              className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia"
+            >
               Next Step
             </button>
           </div>
