@@ -157,8 +157,8 @@ const Plan = () => {
                         >
                           <div>{plan.icon}</div>
                           <div className="flex flex-col items-start">
-                            <p className="font-bold">{plan.name}</p>
-                            <p>
+                            <p className="text-lg font-bold">{plan.name}</p>
+                            <p className="text-neutral-coolGray">
                               ${plan.price[billType]}/
                               {billType === "monthly" ? "mo" : "yr"}
                             </p>
@@ -210,7 +210,7 @@ const Plan = () => {
                 const isValid = await trigger();
                 if (!isValid) return;
                 handleSubmit(onSubmit)();
-                navigate(-1);
+                navigate("/personal");
               }}
               className="rounded-sm  p-2 text-neutral-coolGray"
             >

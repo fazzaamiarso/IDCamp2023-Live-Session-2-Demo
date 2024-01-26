@@ -20,7 +20,7 @@ const Layout = () => {
 
   return (
     <main className="relative min-h-screen w-full bg-neutral-magnolia bg-[url('/src/assets/images/bg-sidebar-mobile.svg')] bg-contain bg-no-repeat font-ubuntu text-primary-marineBlue">
-      <div className="mx-auto flex w-max gap-4 py-8">
+      <div className="mx-auto flex w-max  gap-4 py-8">
         {Object.entries(steps).map(([key, value]) => {
           return (
             <div
@@ -36,7 +36,7 @@ const Layout = () => {
           );
         })}
       </div>
-      <div className="mx-auto w-11/12">
+      <div className="mx-auto w-11/12 max-w-xl">
         <Outlet />
       </div>
     </main>
