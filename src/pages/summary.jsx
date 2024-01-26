@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormStore } from "../store/form-store";
 
 const Summary = () => {
+  const navigate = useNavigate();
   const { plan, addons } = useFormStore();
 
   // please fix this naming
@@ -62,7 +63,9 @@ const Summary = () => {
           <div className="mx-auto flex w-11/12 items-center">
             <button
               type="button"
-              onClick={() => {}}
+              onClick={() => {
+                navigate(-1);
+              }}
               className="rounded-sm  p-2 text-neutral-coolGray"
             >
               Go Back
