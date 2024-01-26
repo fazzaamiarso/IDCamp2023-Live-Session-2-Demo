@@ -6,7 +6,11 @@ const PersonalInfo = () => {
   const navigate = useNavigate();
   const updateData = useFormStore((state) => state.updateData);
   const personalData = useFormStore((state) => state.personal);
-  const { register, handleSubmit } = useForm({ values: personalData });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ values: personalData });
 
   const onSubmit = async (data) => {
     updateData({ data, currentStep: stepsVariant.personal });
@@ -24,6 +28,7 @@ const PersonalInfo = () => {
       <form
         id="step-form"
         className="space-y-6"
+        noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-1">
@@ -32,10 +37,11 @@ const PersonalInfo = () => {
           </label>
           <input
             type="text"
-            {...register("name")}
+            {...register("name", { required: "Please fill out this field" })}
             id="name"
             placeholder="e.g. Stephen King"
           />
+          {errors?.name ? <p>{errors.name.message}</p> : null}
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="email" className="font-[500]">
@@ -43,10 +49,18 @@ const PersonalInfo = () => {
           </label>
           <input
             type="email"
-            {...register("email")}
+            {...register("email", {
+              required: "Please fill out this field",
+              pattern: {
+                message: "Email format is invalid",
+                // eslint-disable-next-line no-useless-escape
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+              },
+            })}
             id="email"
             placeholder="e.g. stephenking@lorem.com"
           />
+          {errors?.email ? <p>{errors.email.message}</p> : null}
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="phoneNumber" className="font-[500]">
@@ -54,10 +68,18 @@ const PersonalInfo = () => {
           </label>
           <input
             type="text"
-            {...register("phoneNumber")}
+            {...register("phoneNumber", {
+              required: "Please fill out this field",
+              pattern: {
+                message: "Email format is invalid",
+                // eslint-disable-next-line no-useless-escape
+                value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+              },
+            })}
             id="phoneNumber"
             placeholder="e.g. +1 234 567 890"
           />
+          {errors?.phoneNumber ? <p>{errors.phoneNumber.message}</p> : null}
         </div>
         <div className="absolute bottom-0 left-0 w-full bg-white py-4">
           <div className="mx-auto flex w-11/12 items-center">

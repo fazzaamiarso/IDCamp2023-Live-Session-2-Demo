@@ -97,7 +97,13 @@ const Plan = () => {
   const planData = useFormStore((state) => state.plan);
   const updateData = useFormStore((state) => state.updateData);
 
-  const { control, handleSubmit, watch } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       billType: planData?.billType ? planData.billType : "monthly",
       planType: planData?.name,
@@ -126,12 +132,15 @@ const Plan = () => {
         </h1>
         <p>You have the option of monthly or yearly billing</p>
       </div>
-      <form>
+      <form noValidate>
         <div className="space-y-8">
           <div>
             <Controller
               name="planType"
               control={control}
+              rules={{
+                required: "Please choose one of the plan",
+              }}
               render={({ field: { onChange, value } }) => {
                 return (
                   <RadioGroup.Root
@@ -148,13 +157,13 @@ const Plan = () => {
                         >
                           <div>{plan.icon}</div>
                           <div className="flex flex-col items-start">
-                            <p>{plan.name}</p>
+                            <p className="font-bold">{plan.name}</p>
                             <p>
                               ${plan.price[billType]}/
                               {billType === "monthly" ? "mo" : "yr"}
                             </p>
                             {billType === "monthly" ? null : (
-                              <p>2 months free</p>
+                              <p className="text-sm ">2 months free</p>
                             )}
                           </div>
                         </RadioGroup.Item>
@@ -164,6 +173,7 @@ const Plan = () => {
                 );
               }}
             />
+            {errors?.planType ? <p>{errors.planType.message}</p> : null}
           </div>
           <Controller
             control={control}
@@ -171,17 +181,21 @@ const Plan = () => {
             render={({ field: { onChange, value } }) => {
               return (
                 <div className="flex items-center justify-center gap-8 rounded-md bg-neutral-alabaster p-4">
-                  <p>Monthly</p>
+                  <p className={`${value === "monthly" ? "font-bold" : ""}`}>
+                    Monthly
+                  </p>
                   <Switch.Root
                     onCheckedChange={(checked) =>
                       onChange(checked ? "yearly" : "monthly")
                     }
                     checked={value === "yearly"}
-                    className="h-[25px] w-[42px] rounded-full bg-primary-marineBlue"
+                    className="h-[25px] w-[42px] rounded-full bg-primary-marineBlue text-neutral-coolGray"
                   >
                     <Switch.Thumb className="block aspect-square h-[17px] translate-x-1 rounded-full bg-white transition-transform data-[state=checked]:translate-x-[21px]" />
                   </Switch.Root>
-                  <p>Yearly</p>
+                  <p className={`${value === "yearly" ? "font-bold" : ""}`}>
+                    Yearly
+                  </p>
                 </div>
               );
             }}
@@ -192,7 +206,9 @@ const Plan = () => {
           <div className="mx-auto flex w-11/12 items-center">
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
+                const isValid = await trigger();
+                if (!isValid) return;
                 handleSubmit(onSubmit)();
                 navigate(-1);
               }}
@@ -202,7 +218,9 @@ const Plan = () => {
             </button>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
+                const isValid = await trigger();
+                if (!isValid) return;
                 handleSubmit(onSubmit)();
                 navigate("/addons");
               }}
