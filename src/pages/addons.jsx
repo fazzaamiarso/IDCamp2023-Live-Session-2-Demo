@@ -55,8 +55,6 @@ const Addons = () => {
     });
   };
 
-  console.log(selectedAddonsIdx);
-
   return (
     <div className="rounded-md bg-white p-6 shadow-md">
       <div className="mb-4">
@@ -122,6 +120,7 @@ const Addons = () => {
               type="button"
               onClick={() => {
                 onSubmit();
+                navigate("/summary");
               }}
               className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia"
             >

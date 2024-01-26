@@ -6,6 +6,7 @@ import Layout from "./pages/layout";
 import Plan from "./pages/plan";
 import PersonalInfo from "./pages/personal-info";
 import Addons from "./pages/addons";
+import Summary from "./pages/summary";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
       { index: true, element: <PersonalInfo /> },
       { path: "plan", element: <Plan /> },
       { path: "addons", element: <Addons /> },
+      { path: "summary", element: <Summary /> },
     ],
   },
 ]);
