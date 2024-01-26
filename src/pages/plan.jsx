@@ -204,6 +204,7 @@ const Plan = () => {
               type="button"
               onClick={() => {
                 handleSubmit(onSubmit)();
+                navigate("/addons");
               }}
               className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia"
             >
