@@ -32,8 +32,30 @@ const addonsVariants = [
 
 const Addons = () => {
   const navigate = useNavigate();
-  const [selectedAddons, setSelectedAddons] = useState([]);
+  const initialAddons = useFormStore((state) => state.addons);
+  const [selectedAddonsIdx, setSelectedAddonsIdx] = useState(
+    initialAddons?.map((addon) => addon.idx) ?? [],
+  );
   const billingType = useFormStore((state) => state.plan?.billType);
+  const updateData = useFormStore((state) => state.updateData);
+
+  const onSubmit = () => {
+    const data = selectedAddonsIdx.length
+      ? selectedAddonsIdx.map((addon) => {
+          return {
+            name: addonsVariants[addon].name,
+            price: addonsVariants[addon].price[billingType],
+            idx: addon,
+          };
+        })
+      : null;
+    updateData({
+      currentStep: "addons",
+      data,
+    });
+  };
+
+  console.log(selectedAddonsIdx);
 
   return (
     <div className="rounded-md bg-white p-6 shadow-md">
@@ -46,15 +68,15 @@ const Addons = () => {
       <form>
         <ToggleGroup.Root
           type="multiple"
-          value={selectedAddons}
-          onValueChange={setSelectedAddons}
+          value={selectedAddonsIdx}
+          onValueChange={setSelectedAddonsIdx}
           className="flex w-full flex-col space-y-4"
         >
-          {addonsVariants.map((addon) => {
+          {addonsVariants.map((addon, idx) => {
             return (
               <ToggleGroup.Item
                 key={addon.name}
-                value={addon.name}
+                value={idx}
                 className="group flex items-center gap-4 rounded-lg p-4 ring-1 transition-colors data-[state=on]:bg-neutral-alabaster data-[state=on]:ring-2 data-[state=on]:ring-primary-purplishBlue"
               >
                 <div className="flex aspect-square items-center justify-center rounded-md p-2 ring-1 transition-colors  group-data-[state=on]:bg-primary-purplishBlue">
@@ -89,6 +111,7 @@ const Addons = () => {
             <button
               type="button"
               onClick={() => {
+                onSubmit();
                 navigate(-1);
               }}
               className="rounded-sm  p-2 text-neutral-coolGray"
@@ -97,7 +120,9 @@ const Addons = () => {
             </button>
             <button
               type="button"
-              onClick={() => {}}
+              onClick={() => {
+                onSubmit();
+              }}
               className="ml-auto rounded-sm bg-primary-marineBlue p-2 text-neutral-magnolia"
             >
               Next Step
