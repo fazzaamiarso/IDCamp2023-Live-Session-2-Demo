@@ -7,6 +7,7 @@ import Plan from "./pages/plan";
 import PersonalInfo from "./pages/personal-info";
 import Addons from "./pages/addons";
 import Summary from "./pages/summary";
+import ThankYou from "./pages/thank";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { path: "plan", element: <Plan /> },
       { path: "addons", element: <Addons /> },
       { path: "summary", element: <Summary /> },
+      { path: "thank", element: <ThankYou /> },
     ],
   },
 ]);

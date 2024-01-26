@@ -74,7 +74,9 @@ const Summary = () => {
             </button>
             <button
               type="button"
-              onClick={() => {}}
+              onClick={() => {
+                navigate("/thank");
+              }}
               className="ml-auto rounded-sm bg-primary-purplishBlue p-2 text-neutral-magnolia"
             >
               Confirm

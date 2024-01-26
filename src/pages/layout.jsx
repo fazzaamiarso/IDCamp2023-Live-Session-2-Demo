@@ -26,7 +26,8 @@ const Layout = () => {
             <div
               key={key}
               className={`flex aspect-square w-12 items-center justify-center rounded-full  ring-1 ring-white`.concat(
-                location.pathname.includes(key)
+                location.pathname.includes(key) ||
+                  (location.pathname === "/thank" && value.step === 4)
                   ? " bg-neutral-magnolia text-primary-marineBlue"
                   : " text-white",
               )}
